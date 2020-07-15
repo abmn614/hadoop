@@ -22,12 +22,13 @@ RUN echo "Port 22" >> /etc/ssh/sshd_config
 
 RUN /usr/sbin/sshd
 
-COPY hadoop-3.2.1.tar.gz /tmp
-
 ENV HADOOP_VERSION 3.2.1
 ENV HADOOP_HOME /usr/local/hadoop-$HADOOP_VERSION
 ENV PATH $PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
 ENV HADOOP_CONF_DIR $HADOOP_HOME/etc/hadoop
+
+COPY hadoop-$HADOOP_VERSION.tar.gz /tmp
+# RUN curl https://mirrors.bfsu.edu.cn/apache/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz -O /tmp
 
 RUN tar -xvf /tmp/hadoop-$HADOOP_VERSION.tar.gz -C /usr/local && rm -rf /tmp/hadoop-$HADOOP_VERSION.tar.gz
 
