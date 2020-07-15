@@ -7,6 +7,7 @@ RUN apk add openssl openssh pdsh openjdk8-jre procps
 ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk
 ENV PATH $PATH:$JAVA_HOME/bin
 
+# 配置免密登录ssh
 RUN ssh-keygen -q -N "" -t dsa -f /etc/ssh/ssh_host_dsa_key
 RUN ssh-keygen -q -N "" -t rsa -f /etc/ssh/ssh_host_rsa_key
 RUN ssh-keygen -q -N "" -t rsa -f /root/.ssh/id_rsa
@@ -19,8 +20,9 @@ RUN echo "Host * \
 RUN chmod 600 /root/.ssh/config
 RUN chown root:root /root/.ssh/config
 RUN echo "Port 22" >> /etc/ssh/sshd_config
-
+RUN echo "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 RUN /usr/sbin/sshd
+
 
 ENV HADOOP_VERSION 3.2.1
 ENV HADOOP_HOME /usr/local/hadoop-$HADOOP_VERSION
